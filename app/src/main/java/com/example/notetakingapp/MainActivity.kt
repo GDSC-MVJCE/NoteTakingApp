@@ -22,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -55,7 +56,7 @@ fun MainScreen(){
             NoteModel("Workshop","Hello World")
         )
     }
-
+var isAddnoteModel = remember { mutableStateOf(false) }
     Scaffold(
         topBar = {
             TopAppBar(
@@ -67,8 +68,9 @@ fun MainScreen(){
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
+                    isAddnoteModel.value =true
 
-                }
+                },
             ){
                 Text("Add")
             }
@@ -82,7 +84,8 @@ fun MainScreen(){
             items(notes.toList()) {
                 it ->
                 Card(
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier
+                        .padding(16.dp)
                         .fillMaxWidth()
                 ) {
                     Column {
@@ -94,7 +97,18 @@ fun MainScreen(){
         }
 
     }
-}
+
+if(isAddnoteModel.value){
+    AddNoteModel(
+    onAddnote = {title, content ->
+        notes.add(
+            NoteModel(title, content)
+        )
+        },
+        onCancel={
+            isAddnoteModel.value=false
+        }
+    )}}
 
 
 
